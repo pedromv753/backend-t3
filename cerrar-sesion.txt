@@ -1,0 +1,5 @@
+Tipo Documento: 1, Número Documento: 44444441, Fecha Cierre Sesión: 2024-10-12 20:59:07
+Tipo Documento: 1, Número Documento: 44444441, Fecha Cierre Sesión: 2024-10-12 20:59:08
+Tipo Documento: 1, Número Documento: 44444441, Fecha Cierre Sesión: 2024-10-12 20:59:08
+Tipo Documento: 1, Número Documento: 44444441, Fecha Cierre Sesión: 2024-10-12 20:59:09
+Tipo Documento: 1, Número Documento: 44444441, Fecha Cierre Sesión: 2024-10-12 20:59:09
