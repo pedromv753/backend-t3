@@ -8,7 +8,12 @@ import pe.edu.cibertec.patitas_backend_a.dto.LogRequestDTO;
 import pe.edu.cibertec.patitas_backend_a.dto.LoginRequestDTO;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Service
 public class AutenticacionServiceImpl implements Autenticarservicio{
@@ -51,14 +56,39 @@ public class AutenticacionServiceImpl implements Autenticarservicio{
     }
 
     @Override
-    public void registrarLogout(LogRequestDTO logoutRequestDTO) throws IOException {
+    public Date cerrarSesion(pe.edu.cibertec.patitas_backend_a.dto.LogRequestDTO logoutRequestDTO) throws IOException {
 
-        String path = "src/main/resources/log.txt";
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(path, true))) {
-            writer.write(logoutRequestDTO.tipoDocumento() + ";" + logoutRequestDTO.numeroDocumento() + ";" + LocalDate.now() + "\n");
+
+        Date fechaLogout = null;
+        //Resource resource = resourceLoader.getResource("auditoria.txt");
+        Path rutaArchivo = Paths.get("log.txt");
+        //File file = resource.getFile();
+        try (BufferedWriter bw = Files.newBufferedWriter(rutaArchivo, StandardOpenOption.APPEND)) {
+
+            // definir fecha
+            fechaLogout = new Date();
+
+            // preparar linea
+            StringBuilder sb = new StringBuilder();
+            sb.append(logoutRequestDTO.tipoDocumento());
+            sb.append(";");
+            sb.append(logoutRequestDTO.numeroDocumento());
+            sb.append(";");
+            sb.append(fechaLogout);
+
+            // escribir linea
+            bw.write(sb.toString());
+            bw.newLine();
+            System.out.println(sb.toString());
+
         } catch (IOException e) {
-            throw new IOException("error  en log.txt", e);
+
+            fechaLogout = null;
+            throw new IOException(e);
+
         }
+
+        return fechaLogout;
 
     }
 }

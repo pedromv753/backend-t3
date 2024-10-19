@@ -14,6 +14,7 @@ import pe.edu.cibertec.patitas_backend_a.service.impl.Autenticarservicio;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.Date;
 
 
 @RestController
@@ -49,26 +50,23 @@ public class AutenticacionController {
 
     }
 
-    @PostMapping("/log")
-    public LogResponseDTO log(@RequestBody LogRequestDTO logRequestDTO) {
-
+    @PostMapping("/logout")
+    public LogResponseDTO logout(@RequestBody LogRequestDTO logoutRequestDTO) {
         try {
+            Thread.sleep(Duration.ofSeconds(5));//tiempo en que va a devolver la respuesta
+            Date fechaLogout = autenticacionService.cerrarSesion(logoutRequestDTO);
+            System.out.println("Respuesta backend : " + fechaLogout);
 
-            Thread.sleep(Duration.ofSeconds(5));
-            autenticacionService.registrarLogout(logRequestDTO);
+            if (fechaLogout == null) {
+                return new LogResponseDTO(false, null, "Error: No se pudo registrar auditoria");
+            }
+            return new LogResponseDTO(true,fechaLogout,"Sesion Cerrada Con Exito");
 
-            return new LogResponseDTO("00", "Log satisfactoriamente ");
 
-        } catch (IOException e) {
-
-            return new LogResponseDTO("99", "tenemos un problema");
-
-        } catch (InterruptedException e) {
-
-            throw new RuntimeException(e);
-
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new LogResponseDTO(false, null, "Error: Ocurrio un problema");
         }
-
     }
 
 }
